@@ -13,10 +13,32 @@ class Player(pygame.sprite.Sprite):
             "./assets/images/alien-player/alien_stand.png"
         ).convert_alpha()
 
-        self.rect = self.image.get_rect(bottom=(ground_height))
+        self.rect = self.image.get_rect(midbottom=(50, ground_height))
+        self.gravity = 0
+
+    def user_input(self):
+        keys = pygame.key.get_pressed()
+        mouse = pygame.mouse.get_pressed()
+
+        if keys[pygame.K_SPACE] and self.rect.bottom >= ground_height or mouse[0] and self.rect.bottom >= ground_height:
+            self.gravity = -15
+
+    def apply_gravity(self):
+        self.gravity += 1
+        self.rect.y += self.gravity
+
+        if self.rect.bottom >= ground_height:
+            self.rect.bottom = ground_height
+
+    def animation():
+        pass
+
+    def update(self):
+        self.user_input()
+        self.apply_gravity()
 
 
-# Initialize pygame
+        # Initialize pygame
 pygame.init()
 
 # Initial setup
@@ -50,6 +72,7 @@ while True:
 
     # Player
     player.draw(screen)
+    player.update()
 
     # Game update frames
     pygame.display.update()
