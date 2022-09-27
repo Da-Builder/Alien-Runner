@@ -1,2 +1,2 @@
-screen_width, screen_height = 800, 400
-ground_height = 300
+SCREEN_WIDTH, SCREEN_HEIGHT = 800, 400
+GROUND_HEIGHT = 300

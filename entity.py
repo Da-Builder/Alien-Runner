@@ -1,7 +1,7 @@
 import pygame as pg
 from random import randint
 
-from global_var import ground_height, screen_width, screen_height
+from settings import *
 
 
 class Player(pg.sprite.Sprite):
@@ -30,7 +30,7 @@ class Player(pg.sprite.Sprite):
 
         # Images and rectangles
         self.image = self.frames["walk"][self.frame_index]
-        self.rect = self.image.get_rect(midbottom=(80, ground_height))
+        self.rect = self.image.get_rect(midbottom=(80, GROUND_HEIGHT))
 
         # Other properties
         self.gravity = 0
@@ -39,18 +39,18 @@ class Player(pg.sprite.Sprite):
         keys = pg.key.get_pressed()
         mouse = pg.mouse.get_pressed()
 
-        if keys[pg.K_SPACE] and self.rect.bottom >= ground_height or mouse[0] and self.rect.bottom >= ground_height:
+        if keys[pg.K_SPACE] and self.rect.bottom >= GROUND_HEIGHT or mouse[0] and self.rect.bottom >= GROUND_HEIGHT:
             self.gravity = -15
 
     def apply_gravity(self):
         self.gravity += 1
         self.rect.y += self.gravity
 
-        if self.rect.bottom >= ground_height:
-            self.rect.bottom = ground_height
+        if self.rect.bottom >= GROUND_HEIGHT:
+            self.rect.bottom = GROUND_HEIGHT
 
     def animation(self):
-        if self.rect.bottom < ground_height:
+        if self.rect.bottom < GROUND_HEIGHT:
             self.image = self.frames["jump"]
         else:
             self.frame_index += 0.1
@@ -72,7 +72,7 @@ class Mobs(pg.sprite.Sprite):
     def __init__(self, type):
         super().__init__()
 
-        y_pos = ground_height
+        y_pos = GROUND_HEIGHT
 
         if type == "fly":
             frame_1 = pg.image.load(
@@ -80,7 +80,7 @@ class Mobs(pg.sprite.Sprite):
             frame_2 = pg.image.load(
                 "./assets/images/fly-mob/fly_2.png").convert_alpha()
 
-            y_pos = ground_height - 100
+            y_pos = GROUND_HEIGHT - 100
 
         elif type == "snail":
             frame_1 = pg.image.load(
@@ -99,7 +99,7 @@ class Mobs(pg.sprite.Sprite):
 
         self.image = self.frames[self.frame_index]
         self.rect = self.image.get_rect(
-            midbottom=(randint(screen_width, screen_width + 200), y_pos))
+            midbottom=(randint(SCREEN_WIDTH, SCREEN_WIDTH + 200), y_pos))
 
     def movement(self):
         self.rect.x -= 8

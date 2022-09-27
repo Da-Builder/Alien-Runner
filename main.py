@@ -1,21 +1,19 @@
 # Import modules
 import pygame as pg
 from sys import exit
-from random import choice
+from random import choice, randint
 
 
 # Import module files
-import entity
-from global_var import ground_height, screen_width, screen_height
-
+from entity import *
+from settings import *
 
 # Initialize pygame
 pg.init()
 
 
 # Initial setup
-screen_width, screen_height = 800, 400
-screen = pg.display.set_mode((screen_width, screen_height))
+screen = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pg.display.set_caption("Alien Run")
 clock = pg.time.Clock()
 
@@ -23,15 +21,14 @@ clock = pg.time.Clock()
 # Backdrop elements
 sky_surf = pg.image.load("./assets/images/sky.png").convert()
 ground_surf = pg.image.load("./assets/images/ground.png").convert()
-ground_height = 300
 
 # Player and mobs element
-player = pg.sprite.GroupSingle(entity.Player())
+player = pg.sprite.GroupSingle(Player())
 
 mobs = pg.sprite.Group()
 
 
-game = True
+game_active = True
 
 time = pg.time.get_ticks()
 # Primary game loop
@@ -43,15 +40,16 @@ while True:
             pg.quit
             exit()
 
-        if now - time >= 1000:
-            mobs.add(entity.Mobs(choice(["fly", "snail", "snail", "snail"])))
-            time = now
+    if now - time >= randint(800, 1200):
+        mobs.add(Mobs(choice(["fly", "snail", "snail", "snail"])))
+        time = now
 
-    print(now - time)
-    if game:
+    print(now-time)
+
+    if game_active:
         # Add backdrop to screen
         screen.blit(sky_surf, (0, 0))
-        screen.blit(ground_surf, (0, ground_height))
+        screen.blit(ground_surf, (0, GROUND_HEIGHT))
 
         mobs.draw(screen)
         mobs.update()
