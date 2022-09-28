@@ -104,7 +104,7 @@ class Mobs(pg.sprite.Sprite):
             self.kill()
 
     def animation(self):
-        self.frame_index += 0.1
+        self.frame_index += 0.2
 
         if self.frame_index >= len(self.frames):
             self.frame_index = 0

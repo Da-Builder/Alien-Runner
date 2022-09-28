@@ -18,6 +18,13 @@ def display_score():
     return score
 
 
+def collision():
+    if pg.sprite.spritecollide(player.sprite, mobs, True):
+        return False
+    else:
+        return True
+
+
 # Initialize pygame
 pg.init()
 
@@ -68,7 +75,8 @@ while True:
 
         if game_state:
             if event.type == mob_timer:
-                mobs.add(Mobs(choice(["fly", "snail", "snail", "snail"])))
+                mobs.add(
+                    Mobs(choice(["fly", "snail", "snail", "snail", "snail"])))
         else:
             if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
                 game_state = True
@@ -80,6 +88,7 @@ while True:
         screen.blit(ground_surf, (0, GROUND_HEIGHT))
 
         score = display_score()
+        game_state = collision()
 
         mobs.draw(screen)
         mobs.update()
@@ -94,8 +103,9 @@ while True:
         screen.blit(title_surf, title_rect)
 
         if score:
-            score_surf = font.render(f"Score: {score}", False, "grey25")
-            score_rect = score_surf.get_rect(midtop=(SCREEN_WIDTH/2, 30))
+            score_surf = font.render(f"Your score: {score}", False, LIGHT_BLUE)
+            score_rect = score_surf.get_rect(
+                midbottom=(SCREEN_WIDTH/2, SCREEN_HEIGHT - 50))
             screen.blit(score_surf, score_rect)
 
         else:
