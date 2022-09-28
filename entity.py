@@ -17,14 +17,11 @@ class Player(pg.sprite.Sprite):
             "./assets/images/alien-player/alien_walk_2.png").convert_alpha()
         frame_jump = pg.image.load(
             "./assets/images/alien-player/alien_jump.png").convert_alpha()
-        frame_idle = pg.image.load(
-            "./assets/images/alien-player/alien_stand.png").convert_alpha()
 
         # Store frames
         self.frames = {
             "walk": [frame_walk_1, frame_walk_2],
             "jump": frame_jump,
-            "idle": frame_idle
         }
         self.frame_index = 0
 
@@ -37,9 +34,8 @@ class Player(pg.sprite.Sprite):
 
     def user_input(self):
         keys = pg.key.get_pressed()
-        mouse = pg.mouse.get_pressed()
 
-        if keys[pg.K_SPACE] and self.rect.bottom >= GROUND_HEIGHT or mouse[0] and self.rect.bottom >= GROUND_HEIGHT:
+        if keys[pg.K_SPACE] and self.rect.bottom >= GROUND_HEIGHT:
             self.gravity = -15
 
     def apply_gravity(self):
@@ -99,7 +95,7 @@ class Mobs(pg.sprite.Sprite):
 
         self.image = self.frames[self.frame_index]
         self.rect = self.image.get_rect(
-            midbottom=(randint(SCREEN_WIDTH, SCREEN_WIDTH + 200), y_pos))
+            midbottom=(randint(SCREEN_WIDTH, SCREEN_WIDTH + 400), y_pos))
 
     def movement(self):
         self.rect.x -= 8
@@ -108,7 +104,7 @@ class Mobs(pg.sprite.Sprite):
             self.kill()
 
     def animation(self):
-        self.frame_index += 0.05
+        self.frame_index += 0.1
 
         if self.frame_index >= len(self.frames):
             self.frame_index = 0
@@ -118,3 +114,11 @@ class Mobs(pg.sprite.Sprite):
     def update(self):
         self.movement()
         self.animation()
+
+
+class GameText():
+    def __init__(self, function):
+        self.function = function
+
+    def update():
+        pass
