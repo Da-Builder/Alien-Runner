@@ -1,4 +1,5 @@
 # Import modules
+from tracemalloc import start
 import pygame as pg
 from sys import exit
 from random import choice
@@ -6,6 +7,15 @@ from random import choice
 # Import module files
 from entity import *
 from settings import *
+
+
+def display_score():
+    score = int(pg.time.get_ticks() / 1000) - start_time
+    score_surf = font.render(f"Score: {score}", False, "grey25")
+    score_rect = score_surf.get_rect(midtop=(SCREEN_WIDTH/2, 30))
+    screen.blit(score_surf, score_rect)
+
+    return score
 
 
 # Initialize pygame
@@ -48,9 +58,6 @@ instruction_rect = instruction_surf.get_rect(
     midbottom=(SCREEN_WIDTH/2, SCREEN_HEIGHT - 50))
 
 
-score_surf = font.render(f"Score: {score}", False, "grey25")
-score_rect = score_surf.get_rect(midtop=(SCREEN_WIDTH/2, 30))
-
 # Primary game loop
 while True:
     # Event listener loop
@@ -65,13 +72,14 @@ while True:
         else:
             if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
                 game_state = True
+                start_time = int(pg.time.get_ticks() / 1000)
 
     if game_state:
         # Add backdrop to screen
         screen.blit(sky_surf, (0, 0))
         screen.blit(ground_surf, (0, GROUND_HEIGHT))
 
-        screen.blit(score_surf, score_rect)
+        score = display_score()
 
         mobs.draw(screen)
         mobs.update()
@@ -81,11 +89,17 @@ while True:
 
     else:
         screen.fill((94, 129, 162))
+        screen.blit(player_idle_surf, player_idle_rect)
 
         screen.blit(title_surf, title_rect)
-        screen.blit(instruction_surf, instruction_rect)
 
-        screen.blit(player_idle_surf, player_idle_rect)
+        if score:
+            score_surf = font.render(f"Score: {score}", False, "grey25")
+            score_rect = score_surf.get_rect(midtop=(SCREEN_WIDTH/2, 30))
+            screen.blit(score_surf, score_rect)
+
+        else:
+            screen.blit(instruction_surf, instruction_rect)
 
     # Game update frames
     pg.display.update()

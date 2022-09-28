@@ -114,11 +114,3 @@ class Mobs(pg.sprite.Sprite):
     def update(self):
         self.movement()
         self.animation()
-
-
-class GameText():
-    def __init__(self, function):
-        self.function = function
-
-    def update():
-        pass
