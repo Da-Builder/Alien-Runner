@@ -27,16 +27,19 @@ class Player(pg.sprite.Sprite):
 
         # Images and rectangles
         self.image = self.frames["walk"][self.frame_index]
-        self.rect = self.image.get_rect(midbottom=(80, GROUND_HEIGHT))
+        self.rect = self.image.get_rect(midbottom=(80, GROUND_HEIGHT - 100))
 
         # Other properties
         self.gravity = 0
+        self.jump_sound = pg.mixer.Sound("./assets/audio/jump.mp3")
+        self.jump_sound.set_volume(0.1)
 
     def user_input(self):
         keys = pg.key.get_pressed()
 
         if keys[pg.K_SPACE] and self.rect.bottom >= GROUND_HEIGHT:
             self.gravity = -15
+            self.jump_sound.play()
 
     def apply_gravity(self):
         self.gravity += 1

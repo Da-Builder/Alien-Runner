@@ -19,6 +19,8 @@ def display_score():
 
 def collision():
     if pg.sprite.spritecollide(player.sprite, mobs, True):
+        player.sprite.rect.bottom = GROUND_HEIGHT - 100
+        mobs.empty()
         return False
     else:
         return True
@@ -34,6 +36,11 @@ clock = pg.time.Clock()
 
 game_state = False
 
+# Background musics
+music = pg.mixer.Sound("./assets/audio/music.wav")
+music.set_volume(0.01)
+music.play(loops=-1)
+
 
 # Backdrop elements
 sky_surf = pg.image.load("./assets/images/sky.png").convert()
@@ -41,6 +48,7 @@ ground_surf = pg.image.load("./assets/images/ground.png").convert()
 
 # Player and mobs element
 player = pg.sprite.GroupSingle(Player())
+
 player_idle_surf = pg.image.load(
     "./assets/images/alien-player/alien_stand.png").convert_alpha()
 player_idle_surf = pg.transform.rotozoom(player_idle_surf, 0, 2)
@@ -87,15 +95,16 @@ while True:
         screen.blit(ground_surf, (0, GROUND_HEIGHT))
 
         score = display_score()
-        game_state = collision()
-
-        mobs.draw(screen)
-        mobs.update()
 
         player.draw(screen)
         player.update()
 
+        mobs.draw(screen)
+        mobs.update()
+
+        game_state = collision()
     else:
+
         screen.fill((94, 129, 162))
         screen.blit(player_idle_surf, player_idle_rect)
 
